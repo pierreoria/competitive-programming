@@ -54,15 +54,25 @@ ll exgcd(ll a, ll b, ll& x, ll& y)
 
 
   // p primo: pequeno teorema de fermat
-  ll minv(ll a, ll m)
+  ll inv(ll a, ll m)
   {
-    ll ans = fexp(a,m-2);
+    ll ans = fexp(a,m-2); // fexp com mod pra não dar overflow
     ans %= m;
     return ans;
   }
 
-  // geral (a,b primos entre si)
-  ll 
+  // geral (a,m primos entre si)
+  ll inv(ll a, ll m)
+{
+  int x,y;
+  ll g = exgcd(a,m,x,y);
+  if (g != 1) {
+    x %= m; 
+    x = (x+m) % m; // x entre 0 e m-1
+    return x;
+  }
+  else return -1; // ou outro valor: a,m não primos entre si
+}
 
 
 // n escolhe k
@@ -86,12 +96,18 @@ ll exgcd(ll a, ll b, ll& x, ll& y)
   }
 
   // combinações mod m:
+  
+      // 1. triangulo de pascal é uma opção, se complexidade de tempo e memória O(n²) passar
 
+      // 2. calcular fatoriais mod m em O(n) depois usar inverso modular
+      ll fat[mx];
+      fat[0] = 1;
+      for (int i = 1; i <= mx; i++)
+          fat[i] = i * fat[i-1]%m;
 
-
-
-
-
+      ll nck(ll n, ll k){
+        return (fat[n] * inv(fat[k] * fat[n-k] % m)) % m;
+      }
 
 
 
