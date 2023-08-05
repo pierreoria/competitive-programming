@@ -76,7 +76,9 @@ int main()
   ll mxval = 0;
   ll v,fv;
 
-  // a partir do valor teoricamente máximo, itera pelos pontos (x_teorico - 450) até (x_teorico + 450) 
+
+  // itera pelos pontos (x_teorico - 450) até (x_teorico + 450) p/ encontrar máximo real
+  // onde x teórico é x tal que f(x) é máximo na função contínua
   for(ll i = -450; i < 450; i++) {
     v = mxx+i;
     if ((v) >= 0 && v <= (ll)r0) {
@@ -86,7 +88,8 @@ int main()
       }
     }
   }
-  // resposta correta sem aproximações (desde que resposta esteja na margem de 450 valores à esquerda ou direita - é o caso nessa questão)
+  // resposta correta sem aproximações 
+  // (desde que resposta esteja na margem de 450 valores à esquerda ou direita do teórico - é o caso nessa questão)
   cout << mxval << br; 
 
   return 0;
