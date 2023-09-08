@@ -27,18 +27,13 @@ int main()
 
     cin>>n;
     ll a[n];
-    s = 0;
     ans = inf;
+    s = 0;
     forn(i,n) cin>>a[i], s+=a[i];
-    k = (1<<n);
-    for (ll i = 1; i < k; i++){
+    for (ll msk = 1; msk < (1<<n); msk++){
         ls = 0;
-        j = (1<<(n-1));
-        u = 0;
-        while(j){
-            if (j&i) ls += a[u];
-            j>>=1;
-            u++;
+        forn(i,n){
+            if (msk&(1<<i)) ls+=a[i];
         }
         la = abs(ls-abs(s-ls));
         ans = min(ans,la);
