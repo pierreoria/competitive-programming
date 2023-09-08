@@ -27,6 +27,7 @@ int main()
 
     cin>>n;
     ll a[n];
+    s = 0;
     ans = inf;
     forn(i,n) cin>>a[i], s+=a[i];
     k = (1<<n);
