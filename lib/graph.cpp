@@ -1,6 +1,15 @@
-// dijkstra
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define ff first
+#define ss second
+
 typedef long long ll;
 typedef pair<long long, long long> pii;
+
+
+// dijkstra
 
 const ll mx = 1e5;
 ll dist[mx];
