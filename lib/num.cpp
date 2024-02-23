@@ -109,6 +109,26 @@ ll exgcd(ll a, ll b, ll& x, ll& y)
         return (fat[n] * inv(fat[k] * fat[n-k] % m)) % m;
       }
 
+// matriz:
+﻿
+
+const int m = 2; // tamanho
+const int MOD = 1e9 + 7;
+
+
+class Matrix{
+public:
+    ll mat [m][m] = {{0, 0}, {0, 0}};
+    Matrix operator * (const Matrix &p){
+        Matrix ans;
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < m; j++)
+            for(int k = ans.mat[i][j] = 0; k < m; k++)
+                ans.mat[i][j] = (ans.mat[i][j] + 1LL * (mat[i][k] % MOD) * (p.mat[k][j] % MOD)) % MOD;
+    return ans;
+    }
+};
+
 
 
 
