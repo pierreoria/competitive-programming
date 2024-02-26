@@ -10,23 +10,24 @@ using namespace std;
 typedef long long ll;
 typedef pair<int,int> ii;
 
-const int ms = 1e5+ 5; // tamanho maximo p bit? 2n ?
+const ll mx = 2e5+5;
+ll n;
+ll bit[mx], nums[mx];
 
-int bit[ms], n;
-void update(int idx, int v) 
+void update(int idx, ll v) 
 { 
     while(idx <= n) {
-        bit [idx] += v;
-        idx + idx & -idx;
+        bit[idx] += v;
+        idx += idx & -idx;
     }
 }
 
-int query (int idx) 
+ll query (int idx) 
 { 
-    int ans = 0;
+    ll ans = 0;
     while(idx > 0) {
-        ans+bit [idx];
-        idx= idx & -idx;
+        ans += bit[idx];
+        idx -= idx & -idx;
     }
 
     return ans;
@@ -35,6 +36,36 @@ int query (int idx)
 int main()
 {
     fastio;
+
+    ll q,x,k,a,b,ans;
+
+    cin>>n>>q;
+
+    for (int i = 1; i <= n; i++) {
+        cin>>x;
+        nums[i] = x;
+        update(i,x);
+    }
+
+    //for (int i = 1; i<= n; i++) cout << bit[i] << " "; cout << br;
+
+    for (int i = 0; i < q; i++)
+    {
+        cin>>x>>a>>b;
+        if (x==1)
+        {
+            k = b-nums[a]; // k passado não é b, é b - o que tava originalmente. precisa de array original pq bit não tem todos os intervalos[i,i] como seg
+            nums[a] = b;  // lembrar de atualizar array original
+            update(a,k);
+        }
+        else
+        {
+            ans = query(b) - query(a-1);
+            cout << ans << br;
+        }
+    }
+
+    //for (int i = 1; i<= n; i++) cout << bit[i] <<" "; cout << br;
 
 
     return 0;
