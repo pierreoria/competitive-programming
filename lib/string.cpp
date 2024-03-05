@@ -1,3 +1,4 @@
+// z-function
 vector<int> z_funct(string& s)
 {
     int n,l,r;
@@ -21,4 +22,26 @@ vector<int> z_funct(string& s)
     }
     
     return z;
+}
+
+
+// manacher
+// só funciona para palíndromos de tamanho ímpar. transformar string a priori
+vector<int> manacher(string& s)
+{
+    int n = s.size();
+    s = '%' + s + '#';
+    vector<int> p(n+2,0); // 1-based
+    int l,r; l = r = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        p[i] = max(0,min(p[l+(r-i)], r-i));
+        while (s[i + p[i]] == s[i - p[i]]) p[i]++;
+        if (i + p[i] > r)
+        {
+            l = i - p[i];
+            r = i + p[i];
+        }
+    }
+    return p;
 }
