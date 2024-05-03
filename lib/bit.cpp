@@ -14,6 +14,27 @@ const ll mx = 2e5+5;
 ll n;
 ll bit[mx], nums[mx];
 
+int bit[N]; // BIT array
+
+int bit_search(int v) // busca por valor, não por range; equivalente a lower bound
+{
+	int sum = 0;
+	int pos = 0;
+	
+	for(int i=LOGN; i>=0; i--)
+	{
+		if(pos + (1 << i) < N and sum + bit[pos + (1 << i)] < v)
+		{
+			sum += bit[pos + (1 << i)];
+			pos += (1 << i);
+		}
+	}
+
+	return pos + 1; // +1 because 'pos' will have position of largest value less than 'v'
+}
+
+
+
 void update(int idx, ll v) 
 { 
     while(idx <= n) {
