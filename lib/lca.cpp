@@ -76,6 +76,11 @@ int main()
     {
         cin>>locn;
 
+        for (int i = 0; i < 2*locn; i++){
+            t[i] = {inf,0};
+        }
+        euler.clear(); h.clear();
+
         vector<vector<int>> adj(locn);
         for (int i = 0; i < locn; i++) indeg[i] = 0, first[i] = -1;
 
@@ -103,9 +108,6 @@ int main()
             }
         }
 
-        
-
-    
         for (int i = 0; i < n; i++){
             t[n+i] = {h[i],i};
             //cout << h[i] << "," << i << br;
