@@ -1,10 +1,5 @@
-# pc
-repo programação competitiva
+# lib
+- Programming contest library
 
-# falta
-* inverso modular
-* combinação (triangulo de pascal & otherwise)
-* coisas que já tavam na lib
-* bitset
-
-  ## botar questões desafiadoras
+# other
+- AC solutions to online judge problems
