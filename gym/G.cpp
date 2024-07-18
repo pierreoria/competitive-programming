@@ -1,3 +1,6 @@
+
+// continua errada
+
 #include <bits/stdc++.h>
  
 using namespace std;
@@ -85,21 +88,20 @@ struct node {
     }
 };
 
-node comb(node l, node r)
-{
-    node res;
-
-    res.sz = l.sz + r.sz;
-    res.val = l.val + r.val; // armazena valor lixo pra nós internos não marcados
-    res.sum = l.sum + r.sum;
-
-    return res;
-}
-
-
 node t[mx<<2];
 bool marked[mx<<2];
 int n;
+
+node comb(int l, int r)
+{
+    node res;
+
+    res.sz = t[l].sz + t[r].sz;
+    res.val = t[l].val + t[r].val; // armazena valor lixo pra nós internos não marcados
+    res.sum = (marked[l] ? t[l].sum * t[l].sz : t[l].sum) + (marked[r] ? t[r].sum * t[r].sz : t[r].sum);
+
+    return res;
+}
 
 void build(vector<node>& a, int v, int tl, int tr) {
     if (tl == tr) {
@@ -109,7 +111,7 @@ void build(vector<node>& a, int v, int tl, int tr) {
         int tm = (tl + tr) / 2;
         build(a, v*2, tl, tm);
         build(a, v*2+1, tm+1, tr);
-        t[v] = comb(t[v<<1], t[v<<1|1]);
+        t[v] = comb(v<<1, v<<1|1);
         //cout << "2 t[" << v << "].val = " << t[v].val << " t[" << v << "].sum = " << t[v].sum << br;
     }
 }
@@ -136,7 +138,7 @@ void update(int v, int tl, int tr, int l, int r, int new_val) {
         int tm = (tl + tr)>>1;
         update(v<<1, tl, tm, l, min(r, tm), new_val);
         update(v<<1|1, tm+1, tr, max(l, tm+1), r, new_val);
-        t[v] = comb(t[v<<1], t[v<<1|1]);
+        t[v] = comb(v<<1, v<<1|1);
     }
 }
 
@@ -145,7 +147,6 @@ int sumquery(int v, int tl, int tr, int l, int r)
 {
     if (l > r) return 0;
     if (tl == l && tr == r) {
-        //cout << "inclui nó " << v << " -> += " << (marked[v] ? t[v].sum * t[v].sz : t[v].sum) << br;
         return (marked[v] ? t[v].sum * t[v].sz : t[v].sum);
     }
     push(v);
@@ -154,7 +155,7 @@ int sumquery(int v, int tl, int tr, int l, int r)
 }
 
 // point query valor
-int getval(int v, int tl, int tr, int pos) {
+int getval(int v, int tl , int tr, int pos) {
     if (tl == tr) {
         return t[v].val;
     }
@@ -168,7 +169,8 @@ int getval(int v, int tl, int tr, int pos) {
 
 
 
-int main() {
+int main()
+{
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
@@ -178,7 +180,7 @@ int main() {
 
     cin>>n;
     vector<node> a(n);
-    for (int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++) {
         cin>>a[i].val;
         a[i].sum = factorsum(a[i].val);
         //cout << "factorsum (" << a[i].val << "): " << a[i].sum << br;
@@ -191,7 +193,10 @@ int main() {
     //cout <<"a "<<  factorsum(1) << br;
     //cout << "q0: " << br;
     //cout << sumquery(1,0,n-1,0,n-1) << br;
-
+    for (int i = 0; i < 20; i++){
+        cout << "fat(" << i << "): " << factorsum(i) << br;
+        cout << "greatestfactor(" << i << "): " << greatestfactor(i) << br;
+    }
 
     for (int i = 0 ; i < q; i++)
     {
@@ -214,7 +219,6 @@ int main() {
         else
         {
             cin>>l>>r>>x; l--; r--;
-            //cout << "op3: (" << l << "," << r << ") = " << x << br;
             update(1,0,n-1,l,r,x);
         }
     }
