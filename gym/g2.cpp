@@ -1,5 +1,5 @@
 
-// errada versão 2
+// continua errada
 
 #include <bits/stdc++.h>
  
@@ -55,6 +55,7 @@ struct segTree{
     {
         if (l == r) {
             val[node] = a[l];
+            sum[node] = factorsum(a[l]);
         }
         else {
             int m = (l+r)>>1;
@@ -67,6 +68,7 @@ struct segTree{
 
     void update_lazy(int node, int l, int r)
     {
+        if (!lazy[node]) return;
         int v = lazy[node];
         val[node] = v;
         sum[node] = factorsum(v) * (r-l+1);
@@ -80,7 +82,7 @@ struct segTree{
             lazy[node<<1] = lazy[(node<<1)|1] = lazy[node];
             update_lazy(node, l, r);
 
-            int m = (l+r)<<1;
+            int m = (l+r)>>1;
             update_lazy(node<<1, l, m);
             update_lazy((node<<1)|1, m+1, r);
         }
@@ -91,25 +93,29 @@ struct segTree{
         if (l > r) return;
         if (tl == l && tr == r) {
             lazy[node] = v;
+            cout << "lazy[" << node << "]: " << v << br;
         }
         else {
             push(node, tl, tr);
-            int tm = (tl + tr)<<1;
+            int tm = (tl + tr)>>1;
             assign_range(node<<1, tl, tm, l, min(tm,r), v);
             assign_range((node<<1)|1, tm+1, tr, max(tm+1,l), r, v);
+
             sum[node] = sum[node<<1] + sum[(node<<1)|1];
+            cout << "sum[" << node << "] = " << sum[node] << br;
         }
     }
 
     int sumquery(int node, int tl, int tr, int l, int r)
     {
+        //cout << node << " " << tl << " " << tr << " " << l << " " << r  << endl;
         if (l > r) return 0;
         if (tl == l && tr == r) {
             update_lazy(node, tl, tr);
             return sum[node];
         }
         push(node, tl, tr);
-        int tm = (tl + tr)<<1;
+        int tm = (tl + tr)>>1;
         return sumquery(node<<1, tl, tm, l, min(r,tm)) +
                sumquery((node<<1)|1, tm+1, tr, max(tm+1,l), r);
     }
@@ -118,11 +124,13 @@ struct segTree{
     {
         if (tl > tr) return 0;
         if (tl == pos && tr == pos){
+            //cout << "val[node]: " << val[node] << br;
             update_lazy(node, tl, tr);
+            //cout << "'val[node]: " << val[node] << br;
             return val[node];
         }
         push(node, tl, tr);
-        int tm = (tl + tr)<<1;
+        int tm = (tl + tr)>>1;
         if (pos <= tm)
             return valquery(node<<1, tl, tm, pos);
         return valquery((node<<1)|1, tm+1, tr, pos);
@@ -158,6 +166,7 @@ int main()
             cin>>pos; pos--;
             val = seg.valquery(1,0,n-1,pos);
             if (greatestfactor(val) > 1) val /= greatestfactor(val);
+            //cout << "val["<<pos<<"]: " << val << br;
             seg.assign_range(1,0,n-1,pos,pos,val); // caso especial de range assign: só folha
         }
         else if (op == 2)
