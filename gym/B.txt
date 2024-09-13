@@ -1,0 +1,57 @@
+1. gerar grafo 
+
+edge: struct com label -> numero do ator. por query ainda precisa pegar 2 filmes em O(100²)? sim
+
+caso base:
+
+dp[i][j] direto: (peso,aresta) - precisa do peso (1) pra fazer dp, reconstrução é com aresta.
+		aresta é simplemente label do ator.
+		
+dp[i][j] passando por k: eu NÃO sei que aresta usei, só sei que passa por k.
+	não tem problema. caminho vira caminho de i pra k + caminho de k pra j
+	
+	
+então pode ser (peso, tipo, label)
+peso é peso normal do caminho
+tipo é filme/ator
+label é label do filme ou ator
+
+struct data{
+	int w,tipo,label; // tipo == 0 pra ator e 1 pra filme
+}
+
+montar adjA: pb.
+
+montar adjF:
+p/ cada i,j em ator -> lista, não matriz
+	if !adjF[i][j]
+		adj[i][j] = adj[j][i] = ator
+
+
+inicialmente tem que botar arestas. arestas são: (1,0,label) a partir das labels de cada
+posição de adj
+
+transição da dp:
+
+for k
+	for i != k
+		for j != i e != k
+			if (dp[i][k].w + dp[k][j].w < dp[i][j].w)
+			{
+				dp[i][j].w =  
+			}
+			
+pra cada query:
+
+	mn = inf;
+	int u,v
+	for i : adjA[a]
+		for j : adjA[b]
+			if (dp[i][j].w < mn)
+				mn = dp[i][j].w, u = i, v= j
+	
+	solve(a,b,u,v)
+	
+a -> reconstruct(a,b) -> v
+
+
